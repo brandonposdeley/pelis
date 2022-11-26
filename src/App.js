@@ -3,6 +3,9 @@ import "./App.css";
 import Navbar from "./componentes/Navbar/Navbar";
 import Card from "./componentes/Card/Card.js";
 import { useDataContext } from "./context/slice";
+import { GiFilmSpool } from "react-icons/gi";
+import Footer from "./componentes/Footer/Footer";
+import axios from "axios";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,13 +22,13 @@ function App() {
   const busqueda = async (event) => {
     busquedaOn();
     event.preventDefault();
-    const search = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=e8002c635aacc458eb931614052b44af&language=es-MX&page=${pag}&query=${input}`
-    );
-    const datosSearch = await search.json();
-    console.log(datosSearch.results);
+    const search = await axios
+      .get(
+        `https://api.themoviedb.org/3/search/movie?api_key=e8002c635aacc458eb931614052b44af&language=es-MX&page=${pag}&query=${input}`
+      )
+      .then((res) => res.data);
     setPeliculas(
-      datosSearch.results.map((pelicula) => ({
+      search.results.map((pelicula) => ({
         title: pelicula.title,
         img: pelicula.poster_path,
         id: pelicula.id,
@@ -77,15 +80,20 @@ function App() {
   return (
     <div className="App">
       <Navbar
+        busqueda={busqueda}
+        setInput={setInput}
         pelisPuntuadas={pelisPuntuadas}
         pelisPopulares={pelisPopulares}
         pelisProx={pelisProx}
       />
       <div className="bg-white">
-        <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            Customers also purchased
-          </h2>
+        <div className="mx-auto max-w-2xl py-16 px-2 sm:px-6 lg:max-w-7xl lg:px-8">
+          <div className="flex justify-center items-center">
+            <GiFilmSpool fontSize={80} />
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+              Peliculas
+            </h2>
+          </div>
           <div className="mt-6 grid grid-cols-1 text-center gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {isLoading === true ? (
               <p>Loading</p>
@@ -106,26 +114,24 @@ function App() {
         </div>
       </div>
 
-      <div className="btn__pagina">
-        <div className="btn__pagina__container">
-          <button className="btn" onClick={pagAnterior}>
-            Anterior
-          </button>
-          <p>{pag}</p>
-          <button className="btn" onClick={pagSiguiente}>
-            Siguiente
-          </button>
-        </div>
+      <div className="flex justify-center gap-5 items-center mb-20">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={pagAnterior}
+          data-ripple-dark="true"
+        >
+          Anterior
+        </button>
+        <p className="text-lg">{pag}</p>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={pagSiguiente}
+          data-ripple-dark="true"
+        >
+          Siguiente
+        </button>
       </div>
-
-      <div className="footer">
-        <div className="footer__container">
-          <p>
-            Creado por
-            <strong> Brandon Posdeley</strong>. 2022
-          </p>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }

@@ -5,7 +5,13 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar({ pelisPuntuadas, pelisPopulares, pelisProx }) {
+export default function Navbar({
+  pelisPuntuadas,
+  pelisPopulares,
+  pelisProx,
+  busqueda,
+  setInput,
+}) {
   const navigation = [
     { name: "Populares", fn: pelisPopulares, current: true },
     { name: "Mejor Puntuadas", fn: pelisPuntuadas, current: false },
@@ -42,7 +48,7 @@ export default function Navbar({ pelisPuntuadas, pelisPopulares, pelisProx }) {
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex space-x-1 align-center justify-center">
                     {navigation.map((item) => (
                       <li
                         key={item.name}
@@ -51,13 +57,24 @@ export default function Navbar({ pelisPuntuadas, pelisPopulares, pelisProx }) {
                           item.current
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium"
+                          "px-3 py-2 rounded-md text-sm font-medium list-none"
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </li>
                     ))}
+                    <form onSubmit={busqueda} className="text-gray-300">
+                      <input
+                        onChange={(e) => setInput(e.target.value)}
+                        className="bg-white w-28 sm:w-36 md:w-64 lg:w-96 border-none mr-2 py-2 px-2 rounded-sm leading-tight focus:outline-none"
+                        type="text"
+                        placeholder="Search"
+                      />
+                      <button className="border p-1" type="submit">
+                        Buscar
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -70,7 +87,7 @@ export default function Navbar({ pelisPuntuadas, pelisPopulares, pelisProx }) {
                 <Disclosure.Button
                   key={item.name}
                   as="a"
-                  href={item.href}
+                  onClick={item.fn}
                   className={classNames(
                     item.current
                       ? "bg-gray-900 text-white"
@@ -82,6 +99,16 @@ export default function Navbar({ pelisPuntuadas, pelisPopulares, pelisProx }) {
                   {item.name}
                 </Disclosure.Button>
               ))}
+              <form onSubmit={busqueda} className="text-gray-300">
+                <input
+                  className="bg-white w-6/12 border-none mx-2 py-2 px-2 rounded-sm leading-tight focus:outline-none"
+                  type="text"
+                  placeholder="Search"
+                />
+                <button className="border p-1" type="submit">
+                  Buscar
+                </button>
+              </form>
             </div>
           </Disclosure.Panel>
         </>
