@@ -9,10 +9,9 @@ import { TiArrowBack } from "react-icons/ti";
 function CardDetails() {
   const [showCard, setShowCard] = useState(true);
   const [mute, setMute] = useState(false);
+  const [data, setData] = useState([]);
   const params = useParams();
-  const { peliculas, pelis, videos, link } = useDataContext();
-
-  const data = peliculas.filter((item) => item.id === Number(params.id));
+  const { peliculas, videos, link } = useDataContext();
 
   const sonido = () => {
     setMute(!mute);
@@ -20,12 +19,13 @@ function CardDetails() {
 
   useEffect(() => {
     videos(params.id);
-    pelis();
-
     if (link !== "") {
       setShowCard(true);
     }
-  }, []);
+    if (peliculas !== null) {
+      setData(peliculas.filter((item) => item.id === Number(params.id)));
+    }
+  }, [peliculas]);
 
   return (
     <div
@@ -51,30 +51,32 @@ function CardDetails() {
           <h4 className="no-video">NO HAY VIDEO</h4>
         )}
       </div>
-      {data.map((item) => {
-        return (
-          <div key={item.title} className="text-white w-10/12 mt-16 mx-auto">
-            <div className="w-10 ml-auto">
-              {mute ? (
-                <GoMute fontSize={28} onClick={sonido} />
-              ) : (
-                <GoUnmute fontSize={28} onClick={sonido} />
-              )}
+      {data &&
+        data.length > 0 &&
+        data?.map((item) => {
+          return (
+            <div key={item.title} className="text-white w-10/12 mt-16 mx-auto">
+              <div className="w-10 ml-auto">
+                {mute ? (
+                  <GoMute fontSize={28} onClick={sonido} />
+                ) : (
+                  <GoUnmute fontSize={28} onClick={sonido} />
+                )}
+              </div>
+              <div>
+                <p className="">Estreno: {item.estreno}</p>
+                <p className="">Puntaje: {item.puntaje}</p>
+              </div>
+              <h3 className="">{item.title}</h3>
+              <p className="">{item.desc}</p>
+              <img
+                className="w-80"
+                src={`https://image.tmdb.org/t/p/w500/${item.img}`}
+                alt=""
+              />
             </div>
-            <div>
-              <p className="">Estreno: {item.estreno}</p>
-              <p className="">Puntaje: {item.puntaje}</p>
-            </div>
-            <h3 className="">{item.title}</h3>
-            <p className="">{item.desc}</p>
-            <img
-              className="w-80"
-              src={`https://image.tmdb.org/t/p/w500/${item.img}`}
-              alt=""
-            />
-          </div>
-        );
-      })}
+          );
+        })}
     </div>
   );
 }

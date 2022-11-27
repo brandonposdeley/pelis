@@ -9,36 +9,33 @@ import axios from "axios";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
-  const [pag, setPag] = useState(1);
-  const [genero, setGenero] = useState("popular");
+
   const [input, setInput] = useState("");
   const [searchOn, setSearchOn] = useState(false);
-  const { pelis, peliculas, setPeliculas } = useDataContext();
-
-  useEffect(() => {
-    pelis(genero, pag);
-  }, [pag, genero]);
-
+  const { pelis, peliculas, setPeliculas, pag, setGenero, setPag } =
+    useDataContext();
   const busqueda = async (event) => {
-    busquedaOn();
     event.preventDefault();
-    const search = await axios
-      .get(
-        `https://api.themoviedb.org/3/search/movie?api_key=e8002c635aacc458eb931614052b44af&language=es-MX&page=${pag}&query=${input}`
-      )
-      .then((res) => res.data);
-    setPeliculas(
-      search.results.map((pelicula) => ({
-        title: pelicula.title,
-        img: pelicula.poster_path,
-        id: pelicula.id,
-        desc: pelicula.overview,
-        puntaje: pelicula.vote_average,
-        estreno: pelicula.release_date,
-      }))
-    );
-
-    setInput("");
+    if (![input].includes("")) {
+      busquedaOn();
+      event.preventDefault();
+      const search = await axios
+        .get(
+          `https://api.themoviedb.org/3/search/movie?api_key=e8002c635aacc458eb931614052b44af&language=es-MX&page=${pag}&query=${input}`
+        )
+        .then((res) => res.data);
+      setPeliculas(
+        search.results.map((pelicula) => ({
+          title: pelicula.title,
+          img: pelicula.poster_path,
+          id: pelicula.id,
+          desc: pelicula.overview,
+          puntaje: pelicula.vote_average,
+          estreno: pelicula.release_date,
+        }))
+      );
+      setInput("");
+    }
   };
 
   const pagSiguiente = () => {
@@ -70,7 +67,7 @@ function App() {
     console.log("es");
     setGenero("now_playing");
     pelis();
-    setPag(1);
+    setPag(2);
   };
 
   const busquedaOn = () => {
@@ -85,6 +82,7 @@ function App() {
         pelisPuntuadas={pelisPuntuadas}
         pelisPopulares={pelisPopulares}
         pelisProx={pelisProx}
+        input={input}
       />
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 px-2 sm:px-6 lg:max-w-7xl lg:px-8">

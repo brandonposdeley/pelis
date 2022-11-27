@@ -11,6 +11,7 @@ export default function Navbar({
   pelisProx,
   busqueda,
   setInput,
+  input,
 }) {
   const navigation = [
     { name: "Populares", fn: pelisPopulares, current: true },
@@ -67,6 +68,7 @@ export default function Navbar({
                     <form onSubmit={busqueda} className="text-gray-300">
                       <input
                         onChange={(e) => setInput(e.target.value)}
+                        value={input}
                         className="bg-white w-28 sm:w-36 md:w-64 lg:w-96 border-none mr-2 py-2 px-2 rounded-sm leading-tight focus:outline-none"
                         type="text"
                         placeholder="Search"
@@ -102,6 +104,7 @@ export default function Navbar({
               <form onSubmit={busqueda} className="text-gray-300">
                 <input
                   onChange={(e) => setInput(e.target.value)}
+                  value={input}
                   className="bg-white w-6/12 border-none mx-2 py-2 px-2 rounded-sm leading-tight focus:outline-none"
                   type="text"
                   placeholder="Search"
