@@ -67,7 +67,7 @@ function CardDetails() {
         data.length > 0 &&
         data?.map((item) => {
           return (
-            <div key={item.title} className="sm:flex text-white w-10/12 mt-16 mx-auto">
+            <div key={item.title} style={{maxWidth: 800}} className="sm:flex text-white w-10/12 mt-16 mx-auto">
               <div className="m-4 text-center">
                 <h3 className="text-2xl font-semibold">{item.title}</h3>
                 <p className="leading-7">{item.desc}</p>
@@ -75,7 +75,7 @@ function CardDetails() {
                 <p>Puntaje: {item.puntaje}</p>
               </div>
               <img
-                className="w-80 sm:w-44"
+                className="w-80 m-auto sm:w-44"
                 src={`https://image.tmdb.org/t/p/w500/${item.img}`}
                 alt=""
               />
