@@ -40,9 +40,14 @@ function CardDetails() {
         </p>
         {showCard ? (
           <ReactPlayer
+           style={{
+            margin: 'auto',
+            maxWidth: 600,
+            height: '50%'
+          }}
             url={`http://www.youtube.com/watch?v=${link}`}
-            height={"100%"}
-            width={"100%"}
+            width='80%'
+            
             volume={10}
             playing={true}
             muted={mute}
@@ -51,26 +56,26 @@ function CardDetails() {
           <h4 className="no-video">NO HAY VIDEO</h4>
         )}
       </div>
+      <div className="w-10 mt-10 mx-auto">
+                {mute ? (
+                  <GoMute color="white" fontSize={28} onClick={sonido} />
+                ) : (
+                  <GoUnmute color="white" fontSize={28} onClick={sonido} />
+                )}
+              </div>
       {data &&
         data.length > 0 &&
         data?.map((item) => {
           return (
-            <div key={item.title} className="text-white w-10/12 mt-16 mx-auto">
-              <div className="w-10 ml-auto">
-                {mute ? (
-                  <GoMute fontSize={28} onClick={sonido} />
-                ) : (
-                  <GoUnmute fontSize={28} onClick={sonido} />
-                )}
+            <div key={item.title} className="sm:flex text-white w-10/12 mt-16 mx-auto">
+              <div className="m-4 text-center">
+                <h3 className="text-2xl font-semibold">{item.title}</h3>
+                <p className="leading-7">{item.desc}</p>
+                <p>Fecha de estreno: {item.estreno}</p>
+                <p>Puntaje: {item.puntaje}</p>
               </div>
-              <div>
-                <p className="">Estreno: {item.estreno}</p>
-                <p className="">Puntaje: {item.puntaje}</p>
-              </div>
-              <h3 className="">{item.title}</h3>
-              <p className="">{item.desc}</p>
               <img
-                className="w-80"
+                className="w-80 sm:w-44"
                 src={`https://image.tmdb.org/t/p/w500/${item.img}`}
                 alt=""
               />

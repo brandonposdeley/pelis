@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Navbar from "./componentes/Navbar/Navbar";
 import Card from "./componentes/Card/Card.js";
@@ -52,19 +52,16 @@ function App() {
   };
 
   const pelisPuntuadas = () => {
-    console.log("pun");
     setGenero("top_rated");
     pelis();
     setPag(1);
   };
   const pelisPopulares = () => {
-    console.log("pop");
     setGenero("popular");
     pelis();
     setPag(1);
   };
   const pelisProx = () => {
-    console.log("es");
     setGenero("now_playing");
     pelis();
     setPag(2);
